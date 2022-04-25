@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
-function Home(props) {
+const getNames = () => {
+    let datas = localStorage.getItem("books");
+    if (datas) {
+        return JSON.parse(datas);
+    } else {
+        return [];
+    }
+};
+function Home({ colorsed }) {
+    const [nameget, SetNameget] = useState(getNames());
     const [logouts, SetLogout] = useState(false);
     const history = useHistory();
     useEffect(() => {
@@ -13,9 +21,12 @@ function Home(props) {
         localStorage.removeItem("tokenauth");
         SetLogout(true);
     };
+    console.log("no", colorsed, nameget[0].name);
     return (
         <div>
-            <h1 className="ms-4 mt-4">welcome to Home Page</h1>
+            <h1 className="ms-4 mt-4" id="color" style={{ color: colorsed }}>
+                welcome to Home Page <span>{nameget[0].name}</span>
+            </h1>
             <button
                 className="mt-5 ms-5"
                 onClick={logoutlocal}

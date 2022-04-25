@@ -3,14 +3,23 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function Login(props) {
+
+const getNamesed = () => {
+    let datas = localStorage.getItem("books");
+    if (datas) {
+        return JSON.parse(datas);
+    } else {
+        return [];
+    }
+};
+function Login() {
+    const [username, SetUsername] = useState(getNamesed());
     const [emails, SetEmail] = useState("");
     const [passwords, SetPassword] = useState("");
     const history = useHistory();
     const {
         register,
         handleSubmit,
-
         formState: { errors },
     } = useForm();
     const emailvalue = (e) => {
@@ -26,20 +35,22 @@ function Login(props) {
     }, []);
     const onSubmit = () => {
         console.log(emails, passwords);
-        // if (emails === "kalai@gmail.com" && passwords === "123") {
-        //     history.push("/");
-        // }
+        if (emails === "kalai@gmail.com" && passwords === "1234") {
+            history.push("/");
+        }
         if (emails !== "kalai@gmail.com" || passwords !== "1234") {
             return toast("Invalid Email and Password!");
         }
+
         localStorage.setItem("tokenauth", true);
-        history.push("/");
+        // history.push("/");
         SetEmail("");
         SetPassword("");
     };
     return (
-        <div className="container">
+        <div className="containers">
             <h1>Login Page</h1>
+            <h1>UserName:{username[0].name}</h1>
             <ToastContainer />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div class="mb-3">
@@ -91,6 +102,8 @@ function Login(props) {
                 <button type="submit" class="btn btn-primary">
                     Submit
                 </button>
+
+                <button onClick={() => history.push("/todo")}>Todo List</button>
             </form>
         </div>
     );
